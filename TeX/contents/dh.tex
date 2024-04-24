@@ -41,3 +41,16 @@ The forward kinematics map is then given by \[ f: \mc{Q} \triangleq \prod_1^7
 \mathbb{S}^1 \rightarrow \SEthree, \quad f(q) = \prod_1^7 A_i(q_i), \]
 %
 where $q_i = \theta_i$ are the joint variables.
+
+An alternative assignment of frames is shown in Figure~\ref{fig:minibot_alt}
+%
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./figures/minibot-7R_alternative.eps}
+  \caption{Schematic of minibot-7R: Alternative DH frame assignment.}
+  \label{fig:minibot_alt}
+\end{figure}
+%
+When the frames are assigned in this way, the DH table~\ref{tab:dh} still
+remains valid, except for the fact that the fact that at home position, we now
+have $\theta_4 = -90^\circ$ rather than $90^\circ$.
