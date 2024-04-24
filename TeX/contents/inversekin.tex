@@ -27,8 +27,9 @@ kinematics problem by $q^{(k)}$ and perform the following iteration.
 \end{equation}
 %
 where the matrix $M$ could be taken as $\bar{J}_v^\dagger$ or $\bar{J}_v^\top$. 
-$\bar{J}_v$ is the translation part of the Jacobian matrix that relates 
-$q_1$ through $q_4$ to the rate of change of the wrist center, i.e., 
+$\bar{J}_v$ is the translation part of the Jacobian matrix that relates
+$\dot{q}_1$ through $\dot{q}_4$ to the rate of change of the wrist center, i.e., 
+$\bar{J}_v \dot{q}_{1:4} = \dot{o}_c$, where
 
 \[ \bar{J}_v = \bmat{\bar{J}_{v_1} & \cdots & \bar{J}_{v_4}}, \]
 where $\bar{J}_{v_{i+1}} = z_i \times (o_c - o_i)$, for $i = 0, \ldots 3$.
