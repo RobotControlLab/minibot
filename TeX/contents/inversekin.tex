@@ -1,0 +1,34 @@
+\section{Inverse Kinematics}
+\label{sec:inversekin}
+
+Suppose that we are given a point $H \in \SEthree$: 
+\[ H = \bmat{R & o \\ 0 & 1}. \]
+We want to find a $q \in \mc{Q}$ such that $f(q) = H$.
+
+We first consider the inverse position kinematics problem, 
+which assumes that the inverse orientation kinematics may be 
+solved by using the final three joints, i.e., whatever the 
+rotation matrix $^0R_4$ is, there exist $q_5$, $q_6$ and $q_7$, 
+such that ${}^0R_4 {}^4R_7 = R$. The inverse position kinematics 
+problem is then to find $q_1$ through $q_4$ such that the product $\prod_1^4
+A_i$ has as its translation vector the wrist center location, $o_c \in
+\mathbb{R}^3$.
+
+In order to solve the inverse position problem, we first find the location of
+the wrist center $o_c$ in the base coordinate system,
+$\Sigma_0$: \[ o_c = o - d_7 R \bmat{0 \\ 0 \\ 1}. \]
+%
+We denote the current guess to the solution $q^d$ to the inverse position
+kinematics problem by $q^{(k)}$ and perform the following iteration.
+
+\begin{equation}
+  q^{(k+1)} = q^{(k)} - \alpha_k M\left(q^{(k)}\right)\left(f\left(q^{(k)}\right) - o_c \right),
+  \label{eq:ipk_iter}
+\end{equation}
+%
+where the matrix $M$ could be taken as $\bar{J}_v^\dagger$ or $\bar{J}_v^\top$. 
+$\bar{J}_v$ is the translation part of the Jacobian matrix that relates 
+$q_1$ through $q_4$ to the rate of change of the wrist center, i.e., 
+
+\[ \bar{J}_v = \bmat{\bar{J}_{v_1} & \cdots & \bar{J}_{v_4}}, \]
+where $\bar{J}_{v_{i+1}} = z_i \times (o_c - o_i)$, for $i = 0, \ldots 3$.

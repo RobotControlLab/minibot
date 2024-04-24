@@ -1,0 +1,96 @@
+\usepackage[table,x11names,svgnames,dvipsnames]{xcolor}
+\usepackage[export]{adjustbox}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[USenglish]{babel}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{cancel}
+\usepackage[tableposition=above]{caption}
+% \usepackage{centernot}
+% \usepackage{comment}
+% \usepackage{enumitem}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+% \usepackage[letterpaper, top=1.0in, bottom=1.0in, left=1.0in, right=1.0in]{geometry}
+\RequirePackage[OT1]{fontenc}
+% \usepackage{fontspec}
+\usepackage{graphics}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+% \usepackage{ifpdf}
+% \usepackage{lastpage}
+% \usepackage{leftidx}
+\usepackage{lipsum}
+% \usepackage{mathrsfs}
+\usepackage{mathtools}
+% \usepackage{multicol}
+% \usepackage{multirow}
+\usepackage{nicefrac}
+% \usepackage{nicematrix}
+% \usepackage{pgfplots}
+\usepackage{pifont}
+% \usepackage{ragged2e}
+% \usepackage{rotating}
+% \usepackage{stmaryrd}
+\usepackage{siunitx}
+\usepackage{soul}
+\usepackage[caption=false]{subfig}
+\usepackage{tabularx}
+\usepackage{tikz}
+% \usepackage{tkz-euclide}
+% \usepackage{ctable}
+% \usetikzlibrary{matrix, arrows}
+\usetikzlibrary{shapes.geometric, arrows, decorations.markings, shapes.arrows}
+\usepackage[textsize=footnotesize]{todonotes}
+% \usepackage{wrapfig}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=1cm, minimum
+height = 0.5cm, text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110,
+minimum height=1cm, text width=3cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=0.8cm, text
+centered, text width=2cm, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, aspect=1.25, minimum width=2cm, minimum height=0.5cm, 
+text centered, text width=3cm, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick, ->, >=stealth]
+
+
+
+
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\input{./contents/macros.tex}
+
+%% The section below needs to be put at the end of this file to make citation links work with ieeeconf.cls
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+\usepackage{hyperref}
+\hypersetup{
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={Control and State Estimation using Electric and Magnetic Fields
+    around Transmission Lines},    % title
+    pdfauthor={Aykut C. Satici, Alex Peterson, John Chiasson, Zach Adams}, % author
+    % pdfsubject={Subject},   % subject of the document
+    % pdfcreator={Creator},   % creator of the document
+    % pdfproducer={Producer}, % producer of the document
+    % pdfkeywords={keyword1, key2, key3}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=magenta,          % color of internal links (change box color with linkbordercolor)
+    linkbordercolor=orange,
+    citecolor=blue,        % color of links to bibliography
+    citebordercolor=green,
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    urlbordercolor=blue,
+}

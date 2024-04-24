@@ -1,0 +1,63 @@
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\ubar}[1]{\text{\b{$#1$}}}
+\newcommand{\norm}[2]{\|{#1}\|_{{}_{#2}}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\dd}{\operatorname{d}\!}
+\newcommand{\muc}[2]{\multicolumn{#1}{c}{#2}}
+\newcommand*\Eval[3]{\left.#1\right\rvert_{#2}^{#3}}
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\el}[2]{\frac{\dd}{\dd t}\pd{\mc{L}}{\dot{#1}} - \pd{\mc{L}}{#1} = #2}
+\newcommand{\elk}[2]{\frac{\dd}{\dd t}\pd{\mc{L}}{\dot{#1}_k} - \pd{\mc{L}}{#1_k} = #2_k}
+\newcommand{\vectornorm}[1]{\left|\left|#1\right|\right|}
+\newcommand{\dom}[1]{\textrm{dom}\;#1}
+\newcommand{\bx}{{\bf x}}
+\newcommand{\bu}{{\bf u}}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+\newcommand{\idapbc}{\textsc{IdaPbc}}
+\newcommand{\electric}{{\textcolor{blue}{\hspace{-0.5mm}$\bm{E}$\;}}}
+\newcommand{\magnetic}{{\textcolor{red}{\hspace{-0.5mm}$\bm{B}$\;}}}
+
+\newcommand{\SEthree}{\mathrm{SE}(3)}
+
+% \theoremstyle{plain}
+% \newtheorem{thm}{Theorem}[section]
+% \makeatletter
+% \@addtoreset{thm}{section}
+% \makeatother
+% \newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}{Lemma}
+% \newtheorem{claim}[thm]{Claim}
+% \newtheorem{axiom}[thm]{Axiom}
+% \newtheorem{conj}[thm]{Conjecture}
+% \newtheorem{fact}[thm]{Fact}
+% \newtheorem{hypo}[thm]{Hypothesis}
+% \newtheorem{assum}[thm]{Assumption}
+\newtheorem{prop}{Proposition}
+% \newtheorem{crit}[thm]{Criterion}
+% \theoremstyle{definition}
+% \newtheorem{defn}[thm]{Definition}
+% \newtheorem{exmp}[thm]{Example}
+\newtheorem{rem}{Remark}
+% \newtheorem{prin}[thm]{Principle}
+
+\DeclareMathOperator{\Tr}{tr}
+\newcommand\xdownarrow[1][2ex]{%
+   \mathrel{\rotatebox{90}{$\xleftarrow{\rule{#1}{0pt}}$}}
+}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\vers}{vers}
+\DeclareMathOperator{\trans}{Trans}
+\DeclareMathOperator{\rot}{Rot}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\sinc}{sinc}
