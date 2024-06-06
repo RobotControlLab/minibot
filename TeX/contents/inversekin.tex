@@ -21,15 +21,20 @@ $\Sigma_0$: \[ o_c = o - d_7 R \bmat{0 \\ 0 \\ 1}. \]
 We denote the current guess to the solution $q^d$ to the inverse position
 kinematics problem by $q^{(k)}$ and perform the following iteration.
 
-\begin{equation}
-  q^{(k+1)} = q^{(k)} - \alpha_k M\left(q^{(k)}\right)\left(f\left(q^{(k)}\right) - o_c \right),
+\begin{align}
+  \begin{split}
+  \bar{q}^{(k+1)} &= q^{(k)} - \alpha_k M\left(q^{(k)}\right)\left(f\left(q^{(k)}\right) - o_c \right), \\
+  q^{(k+1)} &= \operatorname{clamp}\left(\bar{q}^{(k+1)}, q_{\text{lb}}, q_{\text{ub}} \right).
+  \end{split}
   \label{eq:ipk_iter}
-\end{equation}
+\end{align}
 %
-where the matrix $M$ could be taken as $\bar{J}_v^\dagger$ or $\bar{J}_v^\top$. 
-$\bar{J}_v$ is the translation part of the Jacobian matrix that relates
-$\dot{q}_1$ through $\dot{q}_4$ to the rate of change of the wrist center, i.e., 
-$\bar{J}_v \dot{q}_{1:4} = \dot{o}_c$, where
-
-\[ \bar{J}_v = \bmat{\bar{J}_{v_1} & \cdots & \bar{J}_{v_4}}, \]
-where $\bar{J}_{v_{i+1}} = z_i \times (o_c - o_i)$, for $i = 0, \ldots 3$.
+where the matrix $M$ could be taken as the pseudo-inverse or the transpose of
+the Jacobian, $J_w$, that maps the rates of changes $\dot{q}_1$ through
+$\dot{q}_4$ to the rate of change of the wrist center, i.e., $J_w \dot{q}_{1:4}
+= \dot{o}_c$, where
+%
+\[ J_w = \bmat{J_{w,v_1} & \cdots & J_{w, v_4}}, \] where $J_{w,v_{i+1}} = z_i
+\times (o_c - o_i)$, for $i = 0, \ldots 3$. Notice that the step size $\alpha_k$
+may be orders of magnitude different depending on whether $M = J_w^\top$ or $M =
+J_w^\dagger$. 
