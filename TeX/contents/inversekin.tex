@@ -1,28 +1,28 @@
 \section{Inverse Kinematics (IK)}
 \label{sec:inversekin}
-
-Suppose that we are given a point $H \in \SEthree$: 
-\[ \bm{H} = \bmat{\bm{R} & \bm{o} \\ 0 & 1}. \]
-We want to find a $\bm{q} \in \mc{Q}$ such that $f(\bm{q}) = \bm{H}$. We
+% 
+Suppose that we are given a target pose $H \in \SEthree$: 
+\[ \bm{H}_t = \bmat{\bm{R}_t & \bm{o}_t \\ 0 & 1}. \]
+We want to find a $\bm{\theta} \in \mc{Q}$ such that $f(\bm{\theta}) = \bm{H}_t$. We
 describe two methods to achieve this, which would yield equivalent solutions for
 a fully-actuated robot, but the differences get amplified when the robot is
 redundant such as minibot-7R.
 
 We will be using gradient-based optimization to solve for the joint angles. This
-is a recursive algorithm that improves on the current guess $\bm{q}^{(k)}$ to
-a solution $\bm{q}^d$ by performing the following iteration.
+is a recursive algorithm that improves on the current guess $\bm{\theta}^{(k)}$
+to a solution $\bm{\theta}^d$ by performing the following iteration.
 %
 \begin{align}
   \begin{split}
-  \bar{\bm{q}}^{(k+1)} &= \bm{q}^{(k)} - \alpha_k \bm{M}\left(\bm{q}^{(k)}\right)\delta \bm{x}, \\
-  \bm{q}^{(k+1)} &= \operatorname{clamp}\left(\bar{\bm{q}}^{(k+1)}, \bm{q}_{\text{lb}}, \bm{q}_{\text{ub}} \right).
+  \bar{\bm{\theta}}^{(k+1)} &= \bm{\theta}^{(k)} - \alpha_k \bm{M}\left(\bm{\theta}^{(k)}\right)\delta \bm{x}, \\
+  \bm{\theta}^{(k+1)} &= \operatorname{clamp}\left(\bar{\bm{\theta}}^{(k+1)}, \bm{\theta}_{\text{lb}}, \bm{\theta}_{\text{ub}} \right).
   \end{split}
   \label{eq:gd}
 \end{align}
 %
 The matrix $\bm{M}$ is some sort of Jacobian, $\delta \bm{x}$ is the pertinent 
-error that the current guess produces, and $(\bm{q}_{\text{lb}},
-\bm{q}_{\text{ub}})$ is the lower and upper bounds on the joint angles.
+error that the current guess produces, and $(\bm{\theta}_{\text{lb}},
+\bm{\theta}_{\text{ub}})$ is the lower and upper bounds on the joint angles.
 
 \subsection{IK by Decoupling Position and Orientation}
 \label{ssec:ik_decoupling}
@@ -31,11 +31,12 @@ We first consider the inverse position kinematics problem,
 which relies on the fact that the inverse orientation kinematics may be solved
 by using the final three joints due to the presence of a spherical wrist.
 Indeed, whatever the 
-rotation matrix $^0\bm{R}_4$ is, there exist $q_5$, $q_6$ and $q_7$, such that
-${}^0\bm{R}_4 {}^4\bm{R}_7 = \bm{R}$. Since ${}^0\bm{R}_4$ will be determined
-once the inverse position kinematics problem is solved, one can then use $q_5$
-through $q_7$ to yield ${}^4\bm{R}_7 = {}^0\bm{R}_4^\top\bm{R}$ following the 
-steps outlined in Chapter 5.4 of~\cite{spong2020robot} (pg. 151).
+rotation matrix $^0\bm{R}_4$ is, there exist $\theta_5$, $\theta_6$ and
+$\theta_7$, such that ${}^0\bm{R}_4 {}^4\bm{R}_7 = \bm{R}_t$. Since
+${}^0\bm{R}_4$ will be determined once the inverse position kinematics problem
+is solved, one can then use $\theta_5$ through $\theta_7$ to yield ${}^4\bm{R}_7
+= {}^0\bm{R}_4^\top\bm{R}_t$ following the steps outlined in Chapter 5.4
+of~\cite{spong2020robot} (pg. 151).
 
 The inverse position kinematics problem is to find $q_1$ through $q_4$ such
 that the product $\prod_1^4 \bm{A}_i$ has as its translation vector the wrist
@@ -43,15 +44,17 @@ center location, $\bm{o}_c \in \mathbb{R}^3$.
 
 In order to solve the inverse position problem, we first find the location of
 the wrist center $\bm{o}_c$ in the base coordinate system,
-$\Sigma_0$: \[ \bm{o}_c = \bm{o} - d_7 \bm{R} \bmat{0 & 0 & 1}^\top. \]
+$\Sigma_0$: \[ \bm{o}_c = \bm{o} - d_7 \bm{R}_t \bmat{0 & 0 & 1}^\top. \]
 %
 The gradient descent optimization in equation~\eqref{eq:gd} is then performed 
-with $\delta \bm{x} = \left(f\left(\bm{q}^{(k)}\right) - \bm{o}_c \right)$.
-We can take the matrix $\bm{M}$ as the pseudo-inverse or the transpose
-of the Jacobian, $\bm{J}_w$, that maps the rates of changes $\dot{q}_1$ through
-$\dot{q}_4$ to the rate of change of the wrist center, i.e., $\bm{J}_w
-\dot{\bm{q}}_{1:4} = \dot{\bm{o}}_c$. This matrix $\bm{J}_w$ corresponds to the 
-first three-by-four block of the matrix $\bm{J}_v$ from equation~\eqref{eq:jac_v}. 
+with $\delta \bm{x} = \left(f_c\left(\bm{\theta}_{1:4}^{(k)}\right) - \bm{o}_c
+\right)$; where $f_c: \prod_{i=1}^4 \mathbb{S}^1 \rightarrow \mathbb{R}^3$ maps
+the first four joint angles to the position of the wrist center. We can take the
+matrix $\bm{M}$ as the pseudo-inverse or the transpose of the Jacobian,
+$\bm{J}_w$, that maps the rates of changes $\dot{q}_1$ through $\dot{q}_4$ to
+the rate of change of the wrist center, i.e., $\bm{J}_w \dot{\bm{\theta}}_{1:4}
+= \dot{\bm{o}}_c$. This matrix $\bm{J}_w$ corresponds to the first three-by-four
+block of the matrix $\bm{J}_v$ from equation~\eqref{eq:jac_v}. 
 %
 Notice that the step size $\alpha_k$ may be orders of magnitude different
 depending on whether $\bm{M} = \bm{J}_w^\top$ or $\bm{M} = \bm{J}_w^\dagger$. 
@@ -59,3 +62,50 @@ depending on whether $\bm{M} = \bm{J}_w^\top$ or $\bm{M} = \bm{J}_w^\dagger$.
 
 \subsection{Fully Coupled IK}
 \label{ssec:ik_full}
+
+Instead of decoupling the position and orientation, we can perform a gradient 
+step to update all the joint angles in response to both the position and 
+orientation error at the end-effector (as opposed to the wrist center). The 
+gradient descent update due to the error in the end-effector position is very 
+similar to the one due to the wrist center~\ref{ssec:ik_decoupling}, except that
+we use the Jacobian and the error at the end-effector rather than at the wrist 
+center. Furthermore, in this case, we use descent on the full set of angles
+$\bm{q}$ rather than only the first four.
+
+The gradient descent update due to the orientation error is a bit more tricky 
+to derive due to the curved nature of the space of orientations. We can perform 
+the gradient descent by reasoning directly on $\SOthree$, but we let us see how
+to do this in the space of unit quaternions $\mathbb{H}$. This space is 
+topologically a double cover space of $\SOthree$, and its tangent space is 
+isomorphic to $\mathfrak{so}(3)$.
+
+We start by converting the target rotation $\bm{R}_t$ to its representation in 
+$\mathbb{H}$. This can be achieved by following standard procedures; one is 
+provided in~\cite{quaternion}. Suppose that the target orientation is denoted by
+the unit quaternion $\bm{q}_t$ and the current guess at the joint angles 
+$\bm{\theta}^{(k)}$ results in the orientation $\bm{q}_e$. The error this guess
+makes is given by the residual unit quaternion $\bm{q}_r$ that satisfies
+%
+\[
+\bm{q}_e \circ \bm{q}_r = \bm{q}_t \;\; \Rightarrow \;\; \bm{q}_r = \bm{q}_e^* \circ \bm{q}_t.
+\]
+%
+This residual may be expressed as the exponential of an element $\bm{d} \in
+\mathbb{R}^3$, identified with the space of pure quaternions $\mathbb{H}_p$ (the
+tangent space at identity of unit quaternions, isomorphic to
+$\mathfrak{so}(3)$). We can express $\bm{d} = \phi \bm{u}$, where $\phi$ is the magnitude and $\bm{u}$ is a unit vector in $\mathbb{R}^3$. Hence, we have 
+\[\bm{q}_e^* \circ \bm{q}_t = e^{\phi \bm{u}} \;\; \Rightarrow \;\; \phi \bm{u} =
+\log{\left(\bm{q}_e^* \circ \bm{q}_t\right)}. \]
+%
+Note that this is the exponential map acting from the Lie algebra $\bm{H}_p$ 
+and mapping to the space of unit quaternions $\bm{H}$, which is defined as 
+\[
+\exp\left(\phi \bm{u} \right) \triangleq \cos{\phi}\; \langle \sin{(\phi)} \bm{u} \rangle
+\]
+%
+and the logarithm map is its inverse.
+
+We can now perform the gradient descent update for all the joint angles
+$\bm{\theta}$ as in equation~\eqref{eq:gd}, by choosing $\bm{M}$ as the Jacobian
+transpose of the mapping $\bm{\theta} \mapsto \phi \bm{u}$ and $\delta \bm{x} = 
+\phi \bm{u}$.
