@@ -74,36 +74,38 @@ $\bm{q}$ rather than only the first four.
 
 The gradient descent update due to the orientation error is a bit more tricky 
 to derive due to the curved nature of the space of orientations. We can perform 
-the gradient descent by reasoning directly on $\SOthree$, but we let us see how
+gradient descent by reasoning directly on $\SOthree$, let us see how
 to do this in the space of unit quaternions $\mathbb{H}$. This space is 
-topologically a double cover space of $\SOthree$, and its tangent space is 
+topologically a double cover of $\SOthree$, and its tangent space is 
 isomorphic to $\mathfrak{so}(3)$.
 
-We start by converting the target rotation $\bm{R}_t$ to its representation in 
-$\mathbb{H}$. This can be achieved by following standard procedures; one is 
-provided in~\cite{quaternion}. Suppose that the target orientation is denoted by
-the unit quaternion $\bm{q}_t$ and the current guess at the joint angles 
-$\bm{\theta}^{(k)}$ results in the orientation $\bm{q}_e$. The error this guess
-makes is given by the residual unit quaternion $\bm{q}_r$ that satisfies
+We start by converting the target rotation $\bm{R}_t$ to its representation
+$\bm{q}_t \in \mathbb{H}$, the target quaternion. This can be achieved by
+following standard procedures~\cite{quaternion}. Suppose that the current guess
+at the joint angles $\bm{\theta}^{(k)}$ results in the orientation $\bm{q}_e$.
+The error this guess makes is given by the residual unit quaternion $\bm{q}_r$
+that satisfies
 %
 \[
 \bm{q}_e \circ \bm{q}_r = \bm{q}_t \;\; \Rightarrow \;\; \bm{q}_r = \bm{q}_e^* \circ \bm{q}_t.
 \]
 %
 This residual may be expressed as the exponential of an element $\bm{d} \in
-\mathbb{R}^3$, identified with the space of pure quaternions $\mathbb{H}_p$ (the
-tangent space at identity of unit quaternions, isomorphic to
-$\mathfrak{so}(3)$). We can express $\bm{d} = \phi \bm{u}$, where $\phi$ is the magnitude and $\bm{u}$ is a unit vector in $\mathbb{R}^3$. Hence, we have 
+\mathbb{R}^3$, which may be identified with an element in the space of pure
+quaternions $\mathbb{H}_p$ (the tangent space at identity of unit quaternions,
+isomorphic to $\mathfrak{so}(3)$). We can express $\bm{d} = \phi \bm{u}$, where
+$\phi \in \mathbb{R}$ is the magnitude and $\bm{u}$ is a unit vector in
+$\mathbb{R}^3$. Hence, we have 
 \[\bm{q}_e^* \circ \bm{q}_t = e^{\phi \bm{u}} \;\; \Rightarrow \;\; \phi \bm{u} =
 \log{\left(\bm{q}_e^* \circ \bm{q}_t\right)}. \]
 %
-Note that this is the exponential map acting from the Lie algebra $\bm{H}_p$ 
-and mapping to the space of unit quaternions $\bm{H}$, which is defined as 
+Note that this is the exponential map acting from the Lie algebra $\mathbb{H}_p$
+and mapping to the space of unit quaternions $\mathbb{H}$:
 \[
 \exp\left(\phi \bm{u} \right) \triangleq \cos{\phi}\; \langle \sin{(\phi)} \bm{u} \rangle
 \]
 %
-and the logarithm map is its inverse.
+The logarithm is the inverse of this exponential map as usual.
 
 We can now perform the gradient descent update for all the joint angles
 $\bm{\theta}$ as in equation~\eqref{eq:gd}, by choosing $\bm{M}$ as the Jacobian
