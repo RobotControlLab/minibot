@@ -1,40 +1,50 @@
-\section{Inverse Kinematics}
+\section{Inverse Kinematics (IK)}
 \label{sec:inversekin}
 
 Suppose that we are given a point $H \in \SEthree$: 
-\[ H = \bmat{R & o \\ 0 & 1}. \]
-We want to find a $q \in \mc{Q}$ such that $f(q) = H$.
+\[ \bm{H} = \bmat{\bm{R} & \bm{o} \\ 0 & 1}. \]
+We want to find a $\bm{q} \in \mc{Q}$ such that $f(\bm{q}) = \bm{H}$. We
+describe two methods to achieve this, which would yield equivalent solutions for
+a fully-actuated robot, but the differences get amplified when the robot is
+redundant such as miniBot-7R.
+
+\subsection{IK by Decoupling Position and Orientation}
+\label{ssec:ik_decoupling}
 
 We first consider the inverse position kinematics problem, 
 which assumes that the inverse orientation kinematics may be 
 solved by using the final three joints, i.e., whatever the 
-rotation matrix $^0R_4$ is, there exist $q_5$, $q_6$ and $q_7$, 
-such that ${}^0R_4 {}^4R_7 = R$. The inverse position kinematics 
+rotation matrix $^0\bm{R}_4$ is, there exist $q_5$, $q_6$ and $q_7$, 
+such that ${}^0\bm{R}_4 {}^4\bm{R}_7 = R$. The inverse position kinematics 
 problem is then to find $q_1$ through $q_4$ such that the product $\prod_1^4
-A_i$ has as its translation vector the wrist center location, $o_c \in
+\bm{A}_i$ has as its translation vector the wrist center location, $\bm{o}_c \in
 \mathbb{R}^3$.
 
 In order to solve the inverse position problem, we first find the location of
-the wrist center $o_c$ in the base coordinate system,
-$\Sigma_0$: \[ o_c = o - d_7 R \bmat{0 \\ 0 \\ 1}. \]
+the wrist center $\bm{o}_c$ in the base coordinate system,
+$\Sigma_0$: \[ \bm{o}_c = \bm{o} - d_7 \bm{R} \bmat{0 \\ 0 \\ 1}. \]
 %
-We denote the current guess to the solution $q^d$ to the inverse position
-kinematics problem by $q^{(k)}$ and perform the following iteration.
+We denote the current guess to the solution $\bm{q}^d$ to the inverse position
+kinematics problem by $\bm{q}^{(k)}$ and perform the following iteration.
 
 \begin{align}
   \begin{split}
-  \bar{q}^{(k+1)} &= q^{(k)} - \alpha_k M\left(q^{(k)}\right)\left(f\left(q^{(k)}\right) - o_c \right), \\
-  q^{(k+1)} &= \operatorname{clamp}\left(\bar{q}^{(k+1)}, q_{\text{lb}}, q_{\text{ub}} \right).
+  \bar{\bm{q}}^{(k+1)} &= \bm{q}^{(k)} - \alpha_k \bm{M}\left(\bm{q}^{(k)}
+  \right)\left(f\left(\bm{q}^{(k)}\right) - \bm{o}_c \right), \\
+  \bm{q}^{(k+1)} &= \operatorname{clamp}\left(\bar{\bm{q}}^{(k+1)}, \bm{q}_{\text{lb}}, \bm{q}_{\text{ub}} \right).
   \end{split}
   \label{eq:ipk_iter}
 \end{align}
 %
-where the matrix $M$ could be taken as the pseudo-inverse or the transpose of
-the Jacobian, $J_w$, that maps the rates of changes $\dot{q}_1$ through
-$\dot{q}_4$ to the rate of change of the wrist center, i.e., $J_w \dot{q}_{1:4}
-= \dot{o}_c$, where
+where the matrix $\bm{M}$ could be taken as the pseudo-inverse or the transpose
+of the Jacobian, $\bm{J}_w$, that maps the rates of changes $\dot{q}_1$ through
+$\dot{q}_4$ to the rate of change of the wrist center, i.e., $\bm{J}_w
+\dot{\bm{q}}_{1:4} = \dot{\bm{o}}_c$. This matrix $\bm{J}_w$ corresponds to the 
+first four columns of the matrix $\bm{J}_v$ from equation~\eqref{eq:jac_v}.
 %
-\[ J_w = \bmat{J_{w,v_1} & \cdots & J_{w, v_4}}, \] where $J_{w,v_{i+1}} = z_i
-\times (o_c - o_i)$, for $i = 0, \ldots 3$. Notice that the step size $\alpha_k$
-may be orders of magnitude different depending on whether $M = J_w^\top$ or $M =
-J_w^\dagger$. 
+Notice that the step size $\alpha_k$ may be orders of magnitude different
+depending on whether $\bm{M} = \bm{J}_w^\top$ or $\bm{M} = \bm{J}_w^\dagger$. 
+
+
+\subsection{Fully Coupled IK}
+\label{ssec:ik_full}

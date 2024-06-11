@@ -1,32 +1,32 @@
 \section{Velocity Kinematics}
 \label{sec:vel}
 
-We derive the Jacobian $J: \mathbb{R}^7 \rightarrow \mathfrak{se}(3)$, that
+We derive the Jacobian $\bm{J}: \mathbb{R}^7 \rightarrow \mathfrak{se}(3)$, that
 maps the rate of change of the joint variables to the end effector twist.
 This map can be represented in its matrix form by the concatenation of two 
-submatrices, $J_v$ and $J_\omega$, as 
+submatrices, $\bm{J}_v$ and $\bm{J}_\omega$, as 
 \begin{equation} 
-  J = \pmat{J_v \\ J_\omega}, 
+  \bm{J} = \pmat{\bm{J}_v \\ \bm{J}_\omega}, 
   \label{eq:jac}
 \end{equation}
-where $J_v$ and $J_\omega$ are both elements of $\mathbb{R}^{3 \times 4}$. 
-The construction of these matrices are subsequently shown, starting with 
-$J_v$.
+where $\bm{J}_v$ and $\bm{J}_\omega$ are both elements of $\mathbb{R}^{3 \times
+7}$. The construction of these matrices are subsequently shown, starting with 
+$\bm{J}_v$.
 %
 \begin{align}
 \begin{split}
-  J_v &= \bmat{J_{v_1} & J_{v_2} & \cdots & J_{v_7}}, \\
-  J_{v_i} &= z_{i-1} \times (o_c - o_{i-1}).
+  \bm{J}_v &= \bmat{\bm{J}_{v_1} & \bm{J}_{v_2} & \cdots & \bm{J}_{v_7}}, \\
+  \bm{J}_{v_i} &= \bm{z}_{i-1} \times (\bm{o}_c - \bm{o}_{i-1}).
   \label{eq:jac_v}
 \end{split}
 \end{align}
 %
 The second part of the Jacobian matrix is constructed as 
 \begin{equation}
-  J_\omega = \bmat{z_0 & z_1 & \cdots & z_6}.
+  \bm{J}_\omega = \bmat{\bm{z}_0 & \bm{z}_1 & \cdots & \bm{z}_6}.
   \label{eq:jac_omega}
 \end{equation}
 %
 With the Jacobian constructed as in~\eqref{eq:jac}, the end-effector 
-twist $\xi \in \mathfrak{se}(3)$ is related to the joint rates 
-$\dot{q} \in \mathbb{R}^7$ as \[ J \dot{q} = \xi. \]
+twist $\bm{\xi} \in \mathfrak{se}(3)$ is related to the joint rates 
+$\dot{\bm{q}} \in \mathbb{R}^7$ as \[ \bm{J} \dot{\bm{q}} = \bm{\xi}. \]
